@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- set viewport to device width to make site responsive -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- bootstrap css -->
+	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+	 <!-- custom styles -->
+	 <link rel="stylesheet" type="text/css" href="/main.css">
+
+	 <meta charset="UTF-8">
+	 <title>All Books</title>
+</head>
+<body>
+
+	<h1>Single Book To Read - ID: {{books._id}}</h1>
+	<br><br>
+	Title: {{books.title}}<br>
+	Ranking: {{books.ranking}}
+	<span class="glyphicon glyphicon-trash" data-id={{books._id}} id="delete"></span>
+	<br><br>
+	<form id="edit-form">
+		<input type="title" placeholder="Title" id="form-title">
+		<input type="ranking" placeholder="Ranking" id="form-ranking">
+		<input type="hidden" value={{books._id}} id="form-id">
+		<input type="submit" value="Update">
+	</form>
+	
+  	<!-- jquery -->
+  	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+  	<!-- bootstrap js -->
+  	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  	<!-- handlebars -->
+  	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+	<script type="text/javascript" src="/script.js"></script>
+</body>
+</html>
