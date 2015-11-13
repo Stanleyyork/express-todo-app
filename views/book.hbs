@@ -16,10 +16,14 @@
 </head>
 <body>
 
-	<h1>Single Book To Read - ID: {{books._id}}</h1>
-	<br><br>
-	Title: {{books.title}}<br>
-	Ranking: {{books.ranking}}
+	<script id="books-list-template" type="text/x-handlebars-template">
+		<h1>Single Book To Read - ID: {{books._id}}</h1>
+		<br><br>
+		<div class="book-info">
+			<div class="row" id="title">Title: {{books.title}}</div>
+			<div class="row" id="ranking">Ranking: {{books.ranking}}</div>
+		</div>
+	</script>
 	<span class="glyphicon glyphicon-trash" data-id={{books._id}} id="delete"></span>
 	<br><br>
 	<form id="edit-form">
@@ -37,6 +41,7 @@
 
   	<!-- handlebars -->
   	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+
 	<script type="text/javascript" src="/script.js"></script>
 </body>
 </html>

@@ -5,16 +5,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 var app = express();
+var mongoose = require('mongoose');
+var Book = require('./models/book');
+mongoose.connect('mongodb://localhost/book-app');
 app.set('view engine', 'hbs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// DATA
-var myBooks = [
-	{_id: 1, title: "The Giver", ranking: 2},
-	{_id: 2, title: "Having Fun with Ruby", ranking: 3},
-	{_id: 3, title: "Capital in the 21st Century", ranking: 1},
-];
 
 //ROUTES
 	// WEB Routes
@@ -24,85 +20,58 @@ var myBooks = [
 		});
 		// Get - All Books
 		app.get('/books', function(req, res){
-			res.render('books', {books: myBooks});
+			Book.find(function(err, allBooks){
+				res.render('books');
+			});
 		});
 		// Get - Single Book
 		app.get('/books/:id', function(req, res){
-			var singleBookId = parseInt(req.params.id);
-			var singleBook = myBooks.filter(function(book){
-				return book._id == singleBookId;
-			})[0];
-			res.render('book', {books: singleBook});
-		});
-		// Post - Single Book
-		app.post('/books', function(req, res){
-			console.log(req.body);
-			var newBook = req.body;
-			newBook._id = 4;
-			myBooks.push(newBook);
-			res.json(newBook);
-		});
-		// Put - Single Book
-		app.put('/books/:id', function(req, res){
-			var body = req.body;
-			var singleBookId = parseInt(req.params.id);
-			var singleBook = myBooks.filter(function(book){
-				return book._id == singleBookId;
+			var singleBookId = req.params.id;
+			Book.findOne({_id: singleBookId}, function(err, singleBook){
+				res.render('book', {books: singleBook});
 			});
-			singleBook[0].title = body.title;
-			singleBook[0].ranking = body.ranking;
-			//res.json(singleBook);
-		});
-		// Delete - Single Book
-		app.delete('/books/:id', function(req, res){
-			var singleBookId = parseInt(req.params.id);
-			var singleBook = myBooks.filter(function(book){
-				return book._id == singleBookId;
-			});
-			myBooks.splice(myBooks.indexOf(singleBook[0]), 1);
-			res.json(myBooks);
 		});
 	// API Routes
 		// Get - API - All Books
 		app.get('/api/books', function(req, res){
-			res.json(myBooks);
+			Book.find(function(err, allBooks){
+				res.json({ books: allBooks});
+			});
 		});
 		// Get - API - Single Book
 		app.get('/api/books/:id', function(req, res){
-			var singleBookId = parseInt(req.params.id);
-			var singleBook = myBooks.filter(function(book){
-				return book._id == singleBookId;
-			})[0];
-			res.json(singleBook);
+			var singleBookId = req.params.id;
+			Book.findOne({_id: singleBookId}, function(err, singleBook){
+				res.json(singleBook);
+			});
 		});
 		// Post - API - Single Book
 		app.post('/api/books', function(req, res){
-			console.log(req.body);
-			var newBook = req.body;
-			newBook._id = 4;
-			myBooks.push(newBook);
-			res.json(newBook);
+			var newBook = new Book(req.body);
+			newBook.save(function(err, savedBook){
+				res.json(savedBook);
+			});
 		});
 		// Put - API - Single Book
 		app.put('/api/books/:id', function(req, res){
+			console.log("/api/books/:id");
+			console.log(req.body);
 			var body = req.body;
-			var singleBookId = parseInt(req.params.id);
-			var singleBook = myBooks.filter(function(book){
-				return book._id == singleBookId;
+			var singleBookId = req.params.id;
+			Book.findOne({_id: singleBookId}, function(err, singleBook){
+				singleBook.title = body.title;
+				singleBook.ranking = body.ranking;
+				singleBook.save(function(err, singleBook){
+					res.json(singleBook);
+				});
 			});
-			singleBook[0].title = body.title;
-			singleBook[0].ranking = body.ranking;
-			console.log(myBooks);
-			res.json(singleBook);
 		});
 		// Delete - API - Single Book
 		app.delete('/api/books/:id', function(req, res){
-			var singleBookId = parseInt(req.params.id);
-			var singleBook = myBooks.filter(function(book){
-				return book._id == singleBookId;
+			var singleBookId = req.params.id;
+			Book.findOneAndRemove({_id: singleBookId}, function(err, singleBook){
+				res.json(singleBook);
 			});
-			myBooks.splice(myBooks.indexOf(singleBook[0]), 1);
-			res.json(myBooks);
 		});
 
 // SERVER PORT

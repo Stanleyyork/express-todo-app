@@ -19,8 +19,14 @@
 	<h1>My Books To Read</h1>
 	<br><br>
 	{{#each books}}
-		<a href="http://localhost:3000/books/{{_id}}">{{ranking}}: {{title}}</a><br>
+		<a href="http://localhost:3000/books/{{_id}}">{{title}}</a><br>
 	{{/each}}
+	<br><br>
+	<form id="new-form" method="POST">
+		<input type="title" placeholder="Title" id="new-title">
+		<input type="ranking" placeholder="Ranking" id="new-ranking">
+		<input type="submit" value="Create">
+	</form>
 	
 	<!-- jquery -->
   	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -30,6 +36,6 @@
 
   	<!-- handlebars -->
   	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
-	<script type="text/javascript" src="/script.js"></script>
+  	<script type="text/javascript" src="/script.js"></script>
 </body>
 </html>
